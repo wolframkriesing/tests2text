@@ -1,0 +1,23 @@
+{
+  "name": "tests2text",
+  "version": "1.0.0",
+  "description": "Extract the test descriptions from a set of tests.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -r esm src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wolframkriesing/tests2text.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wolframkriesing/tests2text/issues"
+  },
+  "homepage": "https://github.com/wolframkriesing/tests2text#readme",
+  "devDependencies": {
+    "esm": "^3.2.25",
+    "mocha": "^7.1.0"
+  }
+}
