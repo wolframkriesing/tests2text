@@ -28,7 +28,7 @@ const allTests = (sourceFile) => {
     depth++;
     for (const child of children) {
       if (ts.isCallLikeExpression(child)) {
-        nodes.push(child.arguments[0].text);
+        nodes.push({name: child.arguments[0].text});
       }
       searchDescendants(child);
     }
@@ -54,6 +54,10 @@ describe('Extract the text from tests', () => {
     describe('WHEN it contains one `describe`', () => {
       it('THEN return one test suite', () => {
         assert.strictEqual(extractTestSuites('describe("")').length, 1);
+      });
+      it('THEN return the test suite`s name', () => {
+        const suites = extractTestSuites('describe("test suite")');
+        assert.strictEqual(suites[0].name, 'test suite');
       });
     });
   });
