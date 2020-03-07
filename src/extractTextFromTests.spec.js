@@ -18,6 +18,15 @@ describe('Extract the text from tests', () => {
         const suites = extractTestSuites('describe("test suite")');
         assert.strictEqual(suites[0].name, 'test suite');
       });
+      describe('AND one `it()` inside', () => {
+        const suites = () => extractTestSuites(`
+          describe("test suite", () => {
+            it('test 1', () => {});
+          })`);
+        it('THEN return on test', () => {
+          assert.strictEqual(suites()[0].tests.length, 1);
+        });
+      });
     });
     describe('WHEN it contains multiple (not nested) `describe`s', () => {
       it('THEN return all test suite`s names', () => {
