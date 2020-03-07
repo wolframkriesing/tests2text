@@ -11,21 +11,21 @@ const parseTestsOutOfSourceCode = (sourceCode) => {
 };
 
 const allSuites = (sourceFile) => {
-  const suites = [];
+  const suites = {suites: []};
   const searchDescendants = (node, parentSuite) => {
     const children = node.getChildren(sourceFile);
     for (const child of children) {
       if (ts.isCallLikeExpression(child) && child.expression.escapedText === 'describe') {
-        const newSuite = {name: child['arguments'][0].text, suites: []};
-        parentSuite.push(newSuite);
-        searchDescendants(child, newSuite.suites);
+        const newSuite = {name: child['arguments'][0].text, suites: [], tests: []};
+        parentSuite.suites.push(newSuite);
+        searchDescendants(child, newSuite);
       } else {
         searchDescendants(child, parentSuite);
       }
     }
   };
   searchDescendants(sourceFile, suites);
-  return suites;
+  return suites.suites;
 };
 
 export const extractTestSuites = parseTestsOutOfSourceCode;
