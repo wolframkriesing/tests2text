@@ -31,6 +31,14 @@ describe('Extract the text from tests', () => {
         assert.strictEqual(suites[1].name, 'test suite 2');
         assert.strictEqual(suites[2].name, 'test suite 3');
       });
+      it('THEN return ONLY test suites, no other', () => {
+        const sourceCode = `
+          describe("test suite 1");
+          not_describe("test suite 2");
+        `;
+        const suites = extractTestSuites(sourceCode);
+        assert.strictEqual(suites.length, 1);
+      });
     });
     describe('WHEN it contains multiple nested `describe`s', () => {
       it('one level deep THEN return all test suite`s names', () => {

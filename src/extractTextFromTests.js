@@ -15,7 +15,7 @@ const allSuites = (sourceFile) => {
   const searchDescendants = (node, parentSuite) => {
     const children = node.getChildren(sourceFile);
     for (const child of children) {
-      if (ts.isCallLikeExpression(child)) {
+      if (ts.isCallLikeExpression(child) && child.expression.escapedText === 'describe') {
         const newSuite = {name: child['arguments'][0].text, suites: []};
         parentSuite.push(newSuite);
         searchDescendants(child, newSuite.suites);
