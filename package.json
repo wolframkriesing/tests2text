@@ -4,7 +4,7 @@
   "description": "Extract the test descriptions from a set of tests.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -r esm src",
+    "test": "mocha -r esm src/*spec.js",
     "parse-file": "node -r esm ./src/parseFile.js"
   },
   "repository": {
