@@ -37,10 +37,10 @@ describe('Extract the text from tests', () => {
             it('test 2', () => {});
             it('test 3', () => {});
           })`);
-        it('THEN return one test', () => {
+        it('THEN return many tests', () => {
           assert.strictEqual(suites()[0].tests.length, 3);
         });
-        it('THEN return the test`s name', () => {
+        it('THEN return the tests` names', () => {
           assert.strictEqual(suites()[0].tests[0].name, 'test 1');
           assert.strictEqual(suites()[0].tests[1].name, 'test 2');
           assert.strictEqual(suites()[0].tests[2].name, 'test 3');
