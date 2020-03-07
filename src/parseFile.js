@@ -9,4 +9,11 @@ const fullFileName = path.join(process.cwd(), fileName);
 const sourceCode = fs.readFileSync(fullFileName, 'utf8');
 const suites = extractTestSuites(sourceCode);
 
-console.log(JSON.stringify(suites, null, 2));
+const printSuites = (suites, depth = 0) => {
+  const prefix = new Array(depth).fill('  ').join('');
+  suites.forEach(suite => {
+    console.log(prefix + suite.name);
+    suite.suites ? printSuites(suite.suites, depth + 1) : null;
+  });
+};
+printSuites(suites);
