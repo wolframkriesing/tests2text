@@ -23,8 +23,27 @@ describe('Extract the text from tests', () => {
           describe("test suite", () => {
             it('test 1', () => {});
           })`);
-        it('THEN return on test', () => {
+        it('THEN return one test', () => {
           assert.strictEqual(suites()[0].tests.length, 1);
+        });
+        it('THEN return the test`s name', () => {
+          assert.strictEqual(suites()[0].tests[0].name, 'test 1');
+        });
+      });
+      describe('AND many `it()`s inside', () => {
+        const suites = () => extractTestSuites(`
+          describe("test suite", () => {
+            it('test 1', () => {});
+            it('test 2', () => {});
+            it('test 3', () => {});
+          })`);
+        it('THEN return one test', () => {
+          assert.strictEqual(suites()[0].tests.length, 3);
+        });
+        it('THEN return the test`s name', () => {
+          assert.strictEqual(suites()[0].tests[0].name, 'test 1');
+          assert.strictEqual(suites()[0].tests[1].name, 'test 2');
+          assert.strictEqual(suites()[0].tests[2].name, 'test 3');
         });
       });
     });
