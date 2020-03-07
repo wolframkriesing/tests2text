@@ -101,6 +101,27 @@ describe('Extract the text from tests', () => {
         assert.strictEqual(suites[0].suites[0].suites[0].name, 'test suite 3');
         assert.strictEqual(suites[0].suites[0].suites[0].suites[0].name, 'test suite 4');
       });
+      it('multiple suites on many levels THEN return all test suite`s names', () => {
+        const sourceCode = `
+          describe("test suite 1", () => {
+            describe("test suite 1.1", () => {});
+            describe("test suite 1.2", () => {});
+            describe("test suite 2", () => {
+              describe("test suite 2.1", () => {});
+              describe("test suite 2.2", () => {});
+              describe("test suite 3", () => {});
+            });
+          });
+        `;
+        const suites = extractTestSuites(sourceCode);
+        assert.strictEqual(suites[0].name, 'test suite 1');
+        assert.strictEqual(suites[0].suites[0].name, 'test suite 1.1');
+        assert.strictEqual(suites[0].suites[1].name, 'test suite 1.2');
+        assert.strictEqual(suites[0].suites[2].name, 'test suite 2');
+        assert.strictEqual(suites[0].suites[2].suites[0].name, 'test suite 2.1');
+        assert.strictEqual(suites[0].suites[2].suites[1].name, 'test suite 2.2');
+        assert.strictEqual(suites[0].suites[2].suites[2].name, 'test suite 3');
+      });
     });
   });
 });
