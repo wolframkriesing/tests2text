@@ -9,11 +9,11 @@ const parseTestsOutOfSourceCode = (sourceCode) => {
       ts.ScriptTarget.ES2020,
       true
     );
-  return allTests(sourceFile);
+  return allSuites(sourceFile);
 };
 
-const allTests = (sourceFile) => {
-  const nodes = [];
+const allSuites = (sourceFile) => {
+  const suites = [];
   const childNodes = node => {
     const nodes = [];
     node.forEachChild(child => {
@@ -22,19 +22,20 @@ const allTests = (sourceFile) => {
     });
     return nodes;
   };
-  let depth = 0;
-  const searchDescendants = node => {
+  const searchDescendants = (node, parentSuite) => {
     const children = childNodes(node);
-    depth++;
     for (const child of children) {
       if (ts.isCallLikeExpression(child)) {
-        nodes.push({name: child.arguments[0].text});
+        const newSuite = {name: child.arguments[0].text, suites: []};
+        parentSuite.push(newSuite);
+        searchDescendants(child, newSuite.suites);
+      } else {
+        searchDescendants(child, parentSuite);
       }
-      searchDescendants(child);
     }
   };
-  searchDescendants(sourceFile);
-  return nodes;
+  searchDescendants(sourceFile, suites);
+  return suites;
 };
 
 const extractTestSuites = sourceCode => {
@@ -69,6 +70,20 @@ describe('Extract the text from tests', () => {
         assert.strictEqual(suites[0].name, 'test suite 1');
         assert.strictEqual(suites[1].name, 'test suite 2');
         assert.strictEqual(suites[2].name, 'test suite 3');
+      });
+    });
+    describe('WHEN it contains multiple nested `describe`s', () => {
+      it('one level deep THEN return all test suite`s names', () => {
+        const sourceCode = `
+          describe("test suite 1", () => {
+            describe("test suite 1.1");
+            describe("test suite 1.2");
+          });
+        `;
+        const suites = extractTestSuites(sourceCode);
+        assert.strictEqual(suites[0].name, 'test suite 1');
+        assert.strictEqual(suites[0].suites[0].name, 'test suite 1.1');
+        assert.strictEqual(suites[0].suites[1].name, 'test suite 1.2');
       });
     });
   });
