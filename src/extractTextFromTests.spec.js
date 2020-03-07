@@ -38,9 +38,7 @@ const allTests = (sourceFile) => {
 };
 
 const extractTestSuites = sourceCode => {
-  const tests = parseTestsOutOfSourceCode(sourceCode);
-  if (tests.length === 1) return tests;
-  return [];
+  return parseTestsOutOfSourceCode(sourceCode);
 };
 
 describe('Extract the text from tests', () => {
@@ -58,6 +56,19 @@ describe('Extract the text from tests', () => {
       it('THEN return the test suite`s name', () => {
         const suites = extractTestSuites('describe("test suite")');
         assert.strictEqual(suites[0].name, 'test suite');
+      });
+    });
+    describe('WHEN it contains multiple (not nested) `describe`s', () => {
+      it('THEN return all test suite`s names', () => {
+        const sourceCode = `
+          describe("test suite 1");
+          describe("test suite 2");
+          describe("test suite 3");
+        `;
+        const suites = extractTestSuites(sourceCode);
+        assert.strictEqual(suites[0].name, 'test suite 1');
+        assert.strictEqual(suites[1].name, 'test suite 2');
+        assert.strictEqual(suites[2].name, 'test suite 3');
       });
     });
   });
