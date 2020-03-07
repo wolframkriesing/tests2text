@@ -1,3 +1,5 @@
+import assert from 'assert';
+import {it, describe} from 'mocha';
 import {extractTestSuites} from './extractTextFromTests.js';
 
 describe('Extract the text from tests', () => {
