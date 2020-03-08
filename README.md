@@ -49,6 +49,19 @@ That's why the real domain language and not the tech language shall be used in t
 
 **__Tests2text__ is made so one can read the tests, to understand what the code does.**
 
-## Run it
+## Develop and run
+This project requires only docker to run. Every excutable can be prefixed simply by `./run.sh`
+which runs the command inside the docker container.
+You can also run it when nodejs is installed on your machine, just leave out the prefix `./run.sh`.
+
+Getting started:
+- `./run.sh npm i` - will install all nodejs dependencies this project needs to run
+- `./run.sh npm test` - run the tests
+- `./run.sh npm run parse-file src/extractTextFromTests.spec.js` - print the test descriptions
+  of the given file
+
+The most important commands:
 - `./run.sh /bin/bash` to enter the docker container that contains the environment and the app
+- `./run.sh npm i` to install all the dependencies
+- `./run.sh npm test` to run the tests
 - `./run.sh npm run parse-file <path/to/testfile.js>` to parse the test descriptions out of the given file and write it to stdout
