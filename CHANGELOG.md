@@ -11,3 +11,4 @@
 - [x] extract the tests
 - [x] parse files over http(s), e.g. jskatas katas, jslang katas
 - [ ] basic stats, #tests, #test suite, average tests per test suite, 
+- [ ] implement tests on the root level
