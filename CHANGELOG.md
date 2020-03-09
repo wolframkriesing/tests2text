@@ -1,5 +1,8 @@
 # ideas
 - [ ] `./run.sh npm run parse-file <path/to/testfile.js> -- --json` to parse the test descriptions out of the given file as JSON
+- [ ] stats: LOC of a test
+- [ ] lint: words used in test description and identifiers used in test code
+      if there is no overlap WARN, show the overlap ...
 
 # v1
 - [x] `./run.sh npm i` to install all the dependencies
@@ -7,3 +10,4 @@
 - [x] `./run.sh npm run parse-file <path/to/testfile.js>` to parse the test descriptions out of the given file 
 - [x] extract the tests
 - [x] parse files over http(s), e.g. jskatas katas, jslang katas
+- [ ] basic stats, #tests, #test suite, average tests per test suite, 
