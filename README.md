@@ -2,6 +2,15 @@
 Extract the test descriptions from a set of tests.  
 **This project was made so one can read the tests, to understand what the code does.**
 
+## TL;DR
+- `git clone <this repo>`
+- `./run.sh npm install` install app inside a docker container (or if you really should still have
+  a global nodejs installation, you can also do `npm install`)
+- `./run.sh npm run parse-file src/extractTextFromTests.spec.js`
+  show all test descriptions of a local test file
+- `./run.sh npm run parse-file https://katas.tddbin.com/katas/es1/language/global-api/parseInt.js`
+  show them from a remote file
+
 ## A use case
 Given a test file like the following
 ```javascript

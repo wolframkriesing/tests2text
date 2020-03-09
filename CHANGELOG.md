@@ -6,5 +6,4 @@
 - [x] `./run.sh npm test` to run the tests
 - [x] `./run.sh npm run parse-file <path/to/testfile.js>` to parse the test descriptions out of the given file 
 - [x] extract the tests
-- [ ] parse jskatas katas
-- [ ] parse jslang katas
+- [x] parse files over http(s), e.g. jskatas katas, jslang katas
