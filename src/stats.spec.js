@@ -9,8 +9,18 @@ const countSuites = (suites) => {
   const childrenCount = suites.reduce(reducer, 0);
   return childrenCount + suites.length;
 };
-const stats = ({suites, tests}) => {
-  return {counts: {tests: tests.length, suites: countSuites(suites)}};
+const countTests = (all) => {
+  let count = 0;
+  if (all.suites && all.suites.length > 0) {
+    count += all.suites[0].tests.length;
+  }
+  return count + all.tests.length;
+};
+const stats = (all) => {
+  const {suites} = all;
+  const testsCount = countTests(all);
+  const suitesCount = countSuites(suites);
+  return {counts: {tests: testsCount, suites: suitesCount}};
 };
 describe('Provide statistics about test suites', () => {
   it('GIVEN no test suites and no tests THEN return 0 for everything', () => {
@@ -23,22 +33,28 @@ describe('Provide statistics about test suites', () => {
     assert.deepEqual(stats(suites), {counts: {tests: 0, suites: 1}});
   });
   it('GIVEN one test suite containing another one THEN return the counts: suites=2, tests=0', () => {
-    const suite = {name: 'suite', tests: [], suites: [{name: 'suite'}]};
+    const suite = {name: 'suite', tests: [], suites: [{name: 'suite', tests: []}]};
     const suites = {suites: [suite], tests: []};
     assert.deepEqual(stats(suites), {counts: {tests: 0, suites: 2}});
   });
   it('GIVEN two test suites containing two each THEN return the counts: suites=6, tests=0', () => {
-    const aSuite = {name: 'suite'};
+    const aSuite = {name: 'suite', tests: []};
     const suite = {name: 'suite', tests: [], suites: [aSuite, aSuite]};
     const suites = {suites: [suite, suite], tests: []};
     assert.deepEqual(stats(suites), {counts: {tests: 0, suites: 6}});
   });
   it('GIVEN suites multiple levels deep THEN return the right counts', () => {
     const suites = [
-      {name: ''},
-      {name: '', suites: [{name: ''}]},
-      {name: '', suites: [{name: '', suites: [{name: ''}]}]},
-      {name: '', suites: [{name: '', suites: [{name: ''}, {name: ''}]}]}
+      {name: '', tests: []},
+      {name: '', suites: [{name: '', tests: []}], tests: []},
+      {
+        name: '',
+        suites: [{name: '', suites: [{name: '', tests: []}], tests: []}], tests: []
+      },
+      {
+        name: '',
+        suites: [{name: '', suites: [{name: '', tests: []}, {name: '', tests: []}]}]
+      }
     ];
     assert.deepEqual(stats({suites, tests: []}), {counts: {tests: 0, suites: 10}});
   });
@@ -49,8 +65,9 @@ describe('Provide statistics about the tests', () => {
     const oneTest = {suites: [], tests: [{name: ''}]};
     assert.deepEqual(stats(oneTest), {counts: {tests: 1, suites: 0}});
   });
-  it('nested suites', () => {
-
+  it('GIVEN a test on the 2nd level of nested suites THEN return count=1', () => {
+    const oneTest = {suites: [{tests: [{name: ''}]}], tests: []};
+    assert.deepEqual(stats(oneTest), {counts: {tests: 1, suites: 1}});
   });
   it('multiple tests in different suites', () => {
 
