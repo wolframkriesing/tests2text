@@ -3,7 +3,12 @@ import {describe, it} from 'mocha';
 
 const countSuites = (suites) => {
   let childSuitesCount = 0;
-  if (suites.length > 1) {
+  if (suites.length > 2) {
+    childSuitesCount = suites[0].suites ? countSuites(suites[0].suites) : 0;
+    childSuitesCount += suites[1].suites ? countSuites(suites[1].suites) : 0;
+    childSuitesCount += suites[2].suites ? countSuites(suites[2].suites) : 0;
+    childSuitesCount += suites[3].suites ? countSuites(suites[3].suites) : 0;
+  } else if (suites.length  === 2) {
     childSuitesCount = suites[0].suites ? countSuites(suites[0].suites) : 0;
     childSuitesCount += suites[1].suites ? countSuites(suites[1].suites) : 0;
   } else if (suites.length === 1) {
@@ -34,6 +39,15 @@ describe('Provide statistics about test suites', () => {
     const suite = {name: 'suite', tests: [], suites: [aSuite, aSuite]};
     const suites = [suite, suite];
     assert.deepEqual(stats(suites), {counts: {tests: 0, suites: 6}});
+  });
+  it('GIVEN suites multiple levels deep THEN return the right counts', () => {
+    const suites = [
+      {name: ''},
+      {name: '', suites: [{name: ''}]},
+      {name: '', suites: [{name: '', suites: [{name: ''}]}]},
+      {name: '', suites: [{name: '', suites: [{name: ''}, {name: ''}]}]}
+    ];
+    assert.deepEqual(stats(suites), {counts: {tests: 0, suites: 10}});
   });
   it('no suites just tests', () => {
     
