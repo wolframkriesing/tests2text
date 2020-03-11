@@ -11,7 +11,7 @@ const parseTestsOutOfSourceCode = (sourceCode) => {
 };
 
 const allSuites = (sourceFile) => {
-  const suites = {suites: []};
+  const suites = {suites: [], tests: []};
   const searchDescendants = (node, parentSuite) => {
     const children = node.getChildren(sourceFile);
     for (const child of children) {
@@ -31,7 +31,7 @@ const allSuites = (sourceFile) => {
     }
   };
   searchDescendants(sourceFile, suites);
-  return suites.suites;
+  return suites;
 };
 
 export const extractTestSuites = parseTestsOutOfSourceCode;

@@ -5,17 +5,17 @@ import {extractTestSuites} from './extractTextFromTests.js';
 describe('Extract the text from tests', () => {
   describe('GIVEN a string', () => {
     it('WHEN it is empty THEN return no test suites', () => {
-      assert.deepStrictEqual(extractTestSuites(''), []);
+      assert.deepStrictEqual(extractTestSuites(''), {suites: [], tests: []});
     });
     it('WHEN it contains not test THEN return no test suites', () => {
-      assert.deepStrictEqual(extractTestSuites('var x = 1; // but no test'), []);
+      assert.deepStrictEqual(extractTestSuites('var x = 1; // but no test'), {suites: [], tests: []});
     });
     describe('WHEN it contains one `describe`', () => {
       it('THEN return one test suite', () => {
-        assert.strictEqual(extractTestSuites('describe("")').length, 1);
+        assert.strictEqual(extractTestSuites('describe("")').suites.length, 1);
       });
       it('THEN return the test suite`s name', () => {
-        const suites = extractTestSuites('describe("test suite")');
+        const suites = extractTestSuites('describe("test suite")').suites;
         assert.strictEqual(suites[0].name, 'test suite');
       });
       describe('AND one `it()` inside', () => {
@@ -24,10 +24,10 @@ describe('Extract the text from tests', () => {
             it('test 1', () => {});
           })`);
         it('THEN return one test', () => {
-          assert.strictEqual(suites()[0].tests.length, 1);
+          assert.strictEqual(suites().suites[0].tests.length, 1);
         });
         it('THEN return the test`s name', () => {
-          assert.strictEqual(suites()[0].tests[0].name, 'test 1');
+          assert.strictEqual(suites().suites[0].tests[0].name, 'test 1');
         });
       });
       describe('AND many `it()`s inside', () => {
@@ -38,12 +38,12 @@ describe('Extract the text from tests', () => {
             it('test 3', () => {});
           })`);
         it('THEN return many tests', () => {
-          assert.strictEqual(suites()[0].tests.length, 3);
+          assert.strictEqual(suites().suites[0].tests.length, 3);
         });
         it('THEN return the tests` names', () => {
-          assert.strictEqual(suites()[0].tests[0].name, 'test 1');
-          assert.strictEqual(suites()[0].tests[1].name, 'test 2');
-          assert.strictEqual(suites()[0].tests[2].name, 'test 3');
+          assert.strictEqual(suites().suites[0].tests[0].name, 'test 1');
+          assert.strictEqual(suites().suites[0].tests[1].name, 'test 2');
+          assert.strictEqual(suites().suites[0].tests[2].name, 'test 3');
         });
       });
     });
@@ -54,7 +54,7 @@ describe('Extract the text from tests', () => {
           describe("test suite 2");
           describe("test suite 3");
         `;
-        const suites = extractTestSuites(sourceCode);
+        const suites = extractTestSuites(sourceCode).suites;
         assert.strictEqual(suites[0].name, 'test suite 1');
         assert.strictEqual(suites[1].name, 'test suite 2');
         assert.strictEqual(suites[2].name, 'test suite 3');
@@ -64,7 +64,7 @@ describe('Extract the text from tests', () => {
           describe("test suite 1");
           not_describe("test suite 2");
         `;
-        const suites = extractTestSuites(sourceCode);
+        const suites = extractTestSuites(sourceCode).suites;
         assert.strictEqual(suites.length, 1);
       });
     });
@@ -76,7 +76,7 @@ describe('Extract the text from tests', () => {
             describe("test suite 1.2");
           });
         `;
-        const suites = extractTestSuites(sourceCode);
+        const suites = extractTestSuites(sourceCode).suites;
         assert.strictEqual(suites[0].name, 'test suite 1');
         assert.strictEqual(suites[0].suites[0].name, 'test suite 1.1');
         assert.strictEqual(suites[0].suites[1].name, 'test suite 1.2');
@@ -91,7 +91,7 @@ describe('Extract the text from tests', () => {
             });
           });
         `;
-        const suites = extractTestSuites(sourceCode);
+        const suites = extractTestSuites(sourceCode).suites;
         assert.strictEqual(suites[0].name, 'test suite 1');
         assert.strictEqual(suites[0].suites[0].name, 'test suite 2');
         assert.strictEqual(suites[0].suites[0].suites[0].name, 'test suite 3');
@@ -109,7 +109,7 @@ describe('Extract the text from tests', () => {
             });
           });
         `;
-        const suites = extractTestSuites(sourceCode);
+        const suites = extractTestSuites(sourceCode).suites;
         assert.strictEqual(suites[0].name, 'test suite 1');
         assert.strictEqual(suites[0].suites[0].name, 'test suite 1.1');
         assert.strictEqual(suites[0].suites[1].name, 'test suite 1.2');
