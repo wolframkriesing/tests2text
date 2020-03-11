@@ -2,8 +2,13 @@ import assert from 'assert';
 import {describe, it} from 'mocha';
 
 const countSuites = (suites) => {
-  const hasSuites = suites.length && suites[0].suites;
-  const childSuitesCount = hasSuites ? countSuites(suites[0].suites) : 0;
+  let childSuitesCount = 0;
+  if (suites.length > 1) {
+    childSuitesCount = suites[0].suites ? countSuites(suites[0].suites) : 0;
+    childSuitesCount += suites[1].suites ? countSuites(suites[1].suites) : 0;
+  } else if (suites.length === 1) {
+    childSuitesCount = suites[0].suites ? countSuites(suites[0].suites) : 0;
+  }
   return suites.length + childSuitesCount;
 };
 const stats = (suites) => {
@@ -23,6 +28,12 @@ describe('Provide statistics about test suites', () => {
     const suite = {name: 'suite', tests: [], suites: [{name: 'suite'}]};
     const suites = [suite];
     assert.deepEqual(stats(suites), {counts: {tests: 0, suites: 2}});
+  });
+  it('GIVEN two test suites containing two each THEN return the counts: suites=6, tests=0', () => {
+    const aSuite = {name: 'suite'};
+    const suite = {name: 'suite', tests: [], suites: [aSuite, aSuite]};
+    const suites = [suite, suite];
+    assert.deepEqual(stats(suites), {counts: {tests: 0, suites: 6}});
   });
   it('no suites just tests', () => {
     
