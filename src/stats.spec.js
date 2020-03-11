@@ -9,28 +9,28 @@ const countSuites = (suites) => {
   const childrenCount = suites.reduce(reducer, 0);
   return childrenCount + suites.length;
 };
-const stats = (suites) => {
+const stats = ({suites}) => {
   return {counts: {tests: 0, suites: countSuites(suites)}};
 };
 describe('Provide statistics about test suites', () => {
   it('GIVEN no test suites and no tests THEN return 0 for everything', () => {
-    const noSuites = [];
+    const noSuites = {suites: [], tests: []};
     assert.deepEqual(stats(noSuites), {counts: {tests: 0, suites: 0}});
   });
   it('GIVEN one test suite with no tests THEN return the counts: suites=1, tests=0', () => {
     const suite = {name: 'test suite', tests: []};
-    const suites = [suite];
+    const suites = {suites: [suite], tests: []};
     assert.deepEqual(stats(suites), {counts: {tests: 0, suites: 1}});
   });
   it('GIVEN one test suite containing another one THEN return the counts: suites=2, tests=0', () => {
     const suite = {name: 'suite', tests: [], suites: [{name: 'suite'}]};
-    const suites = [suite];
+    const suites = {suites: [suite], tests: []};
     assert.deepEqual(stats(suites), {counts: {tests: 0, suites: 2}});
   });
   it('GIVEN two test suites containing two each THEN return the counts: suites=6, tests=0', () => {
     const aSuite = {name: 'suite'};
     const suite = {name: 'suite', tests: [], suites: [aSuite, aSuite]};
-    const suites = [suite, suite];
+    const suites = {suites: [suite, suite], tests: []};
     assert.deepEqual(stats(suites), {counts: {tests: 0, suites: 6}});
   });
   it('GIVEN suites multiple levels deep THEN return the right counts', () => {
@@ -40,7 +40,7 @@ describe('Provide statistics about test suites', () => {
       {name: '', suites: [{name: '', suites: [{name: ''}]}]},
       {name: '', suites: [{name: '', suites: [{name: ''}, {name: ''}]}]}
     ];
-    assert.deepEqual(stats(suites), {counts: {tests: 0, suites: 10}});
+    assert.deepEqual(stats({suites, tests: []}), {counts: {tests: 0, suites: 10}});
   });
 });
 
