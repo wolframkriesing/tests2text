@@ -42,8 +42,12 @@ describe('Provide statistics about test suites', () => {
     ];
     assert.deepEqual(stats(suites), {counts: {tests: 0, suites: 10}});
   });
-  it('no suites just tests', () => {
-    
+});
+
+describe('Provide statistics about the tests', () => {
+  it('GIVEN no suites, just one test THEN return the count=1', () => {
+    // const noSuites = [];
+    // assert.deepEqual(stats(noSuites), {counts: {tests: 1, suites: 0}});
   });
   it('nested suites', () => {
 
