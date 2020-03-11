@@ -12,3 +12,5 @@
 - [x] parse files over http(s), e.g. jskatas katas, jslang katas
 - [ ] basic stats, #tests, #test suite, average tests per test suite, 
 - [ ] implement tests on the root level
+- [ ] all `suites` need to be renamed to a better name, it used to be
+      an array `[]` but it became `{suites: [], tests: []}` - What is a good name for it?
