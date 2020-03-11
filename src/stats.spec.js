@@ -9,8 +9,8 @@ const countSuites = (suites) => {
   const childrenCount = suites.reduce(reducer, 0);
   return childrenCount + suites.length;
 };
-const stats = ({suites}) => {
-  return {counts: {tests: 0, suites: countSuites(suites)}};
+const stats = ({suites, tests}) => {
+  return {counts: {tests: tests.length, suites: countSuites(suites)}};
 };
 describe('Provide statistics about test suites', () => {
   it('GIVEN no test suites and no tests THEN return 0 for everything', () => {
@@ -46,8 +46,8 @@ describe('Provide statistics about test suites', () => {
 
 describe('Provide statistics about the tests', () => {
   it('GIVEN no suites, just one test THEN return the count=1', () => {
-    // const noSuites = [];
-    // assert.deepEqual(stats(noSuites), {counts: {tests: 1, suites: 0}});
+    const oneTest = {suites: [], tests: [{name: ''}]};
+    assert.deepEqual(stats(oneTest), {counts: {tests: 1, suites: 0}});
   });
   it('nested suites', () => {
 
