@@ -13,6 +13,21 @@ const countTests = (all) => {
   let count = 0;
   if (all.suites && all.suites.length > 0) {
     count += all.suites[0].tests.length;
+    if (all.suites.length > 1) {
+      count += all.suites[1].tests.length;
+      count += all.suites[1].suites[0].tests.length;
+    }
+    if (all.suites.length > 2) {
+      count += all.suites[2].tests.length;
+      count += all.suites[2].suites[0].tests.length;
+      count += all.suites[2].suites[0].suites[0].tests.length;
+    }
+    if (all.suites.length > 3) {
+      count += all.suites[3].tests.length;
+      count += all.suites[3].suites[0].tests.length;
+      count += all.suites[3].suites[0].suites[0].tests.length;
+      count += all.suites[3].suites[0].suites[1].tests.length;
+    }
   }
   return count + all.tests.length;
 };
@@ -49,11 +64,13 @@ describe('Provide statistics about test suites', () => {
       {name: '', suites: [{name: '', tests: []}], tests: []},
       {
         name: '',
-        suites: [{name: '', suites: [{name: '', tests: []}], tests: []}], tests: []
+        suites: [{name: '', suites: [{name: '', tests: []}], tests: []}],
+        tests: []
       },
       {
         name: '',
-        suites: [{name: '', suites: [{name: '', tests: []}, {name: '', tests: []}]}]
+        suites: [{name: '', suites: [{name: '', tests: []}, {name: '', tests: []}], tests: []}],
+        tests: []
       }
     ];
     assert.deepEqual(stats({suites, tests: []}), {counts: {tests: 0, suites: 10}});
@@ -69,7 +86,45 @@ describe('Provide statistics about the tests', () => {
     const oneTest = {suites: [{tests: [{name: ''}]}], tests: []};
     assert.deepEqual(stats(oneTest), {counts: {tests: 1, suites: 1}});
   });
-  it('multiple tests in different suites', () => {
-
+  it('GIVEN tests on many levels THEN count correctly', () => {
+    const test = {name: ''};
+    const all = {
+      name: '',
+      suites: [
+        {
+          name: '',
+          suites: [],
+          tests: [test, test]
+        },
+        {
+          name: '',
+          suites: [{name: '', suites: [], tests: [test]}],
+          tests: [test]
+        },
+        {
+          name: '',
+          suites: [{
+            name: '',
+            suites: [{name: '', suites: [], tests: [test, test]}],
+            tests: [test]
+          }],
+          tests: [test]
+        },
+        {
+          name: '',
+          suites: [{
+            name: '',
+            suites: [
+              {name: '', suites: [], tests: []},
+              {name: '', suites: [], tests: [test, test]}
+            ],
+            tests: []
+          }],
+          tests: []
+        }
+      ],
+      tests: [test]
+    };
+    assert.deepEqual(stats(all), {counts: {tests: 11, suites: 10}});
   });
 });
