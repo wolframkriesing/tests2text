@@ -1,5 +1,3 @@
-import {describe} from "mocha";
-
 const countSuites = (suites) => {
   const reducer = (count, suite) => {
     const childSuites = suite.suites ? suite.suites : [];
