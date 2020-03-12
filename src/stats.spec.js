@@ -1,28 +1,7 @@
 import assert from 'assert';
 import {describe, it} from 'mocha';
+import {stats} from './stats.js';
 
-const countSuites = (suites) => {
-  const reducer = (count, suite) => {
-    const childSuites = suite.suites ? suite.suites : [];
-    return count + countSuites(childSuites);
-  };
-  const childrenCount = suites.reduce(reducer, 0);
-  return childrenCount + suites.length;
-};
-const countTestsInSuites = (suites) =>
-  suites.reduce(
-    (count, suite) => {
-      const countInChildSuites = countTestsInSuites(suite.suites);
-      return count + suite.tests.length + countInChildSuites;
-    }, 0
-  );
-const countTests = (all) => countTestsInSuites(all.suites) + all.tests.length;
-const stats = (all) => {
-  const {suites} = all;
-  const testsCount = countTests(all);
-  const suitesCount = countSuites(suites);
-  return {counts: {tests: testsCount, suites: suitesCount}};
-};
 describe('Provide statistics about test suites', () => {
   it('GIVEN no test suites and no tests THEN return 0 for everything', () => {
     const noSuites = {suites: [], tests: []};
