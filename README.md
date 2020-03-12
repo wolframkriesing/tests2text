@@ -44,6 +44,15 @@ Extract the text from tests
     WHEN it contains one `describe`
       THEN return one test suite
       THEN return the test suite`s name
+
+Statistics
+-----------
+{
+    "counts": {
+        "tests": 4,
+        "suites": 2
+    }
+}
 ```
 
 ## Why?
