@@ -50,7 +50,7 @@ Statistics
 {
     "counts": {
         "tests": 4,
-        "suites": 2
+        "suites": 3
     }
 }
 ```
