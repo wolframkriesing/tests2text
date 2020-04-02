@@ -1,4 +1,4 @@
-# tests2text
+# test-stitcher
 Extract the test descriptions from a set of tests.  
 **This project was made so one can read the tests, to understand what the code does.**
 
@@ -65,7 +65,7 @@ writing tests that state what I expect the code to do. That means a colleague (a
 just another developer) should be able to read and make sense of my tests.
 That's why the real domain language and not the tech language shall be used in tests.
 
-**__Tests2text__ is made so one can read the tests, to understand what the code does.**
+**__Test-stitcher__ is made so one can read the tests, to understand what the code does.**
 
 ## Develop and run
 This project requires only docker to run. Every excutable can be prefixed simply by `./run.sh`
