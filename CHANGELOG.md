@@ -3,6 +3,9 @@
 - [ ] stats: LOC of a test
 - [ ] lint: words used in test description and identifiers used in test code
       if there is no overlap WARN, show the overlap ...
+      e.g. `it("counts the number of elements", () { assert(lengthOfAttrributes(...)) })`
+      there is no overlap in words "counts" vs. "length", "elements" vs. "attributes"
+      the test and its description should not use different language
 
 # v1
 - [x] `./run.sh npm i` to install all the dependencies
