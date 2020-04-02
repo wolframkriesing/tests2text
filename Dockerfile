@@ -1,2 +1,2 @@
 FROM node
-WORKDIR /home/node/app
+WORKDIR /app
